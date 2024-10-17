@@ -1,11 +1,12 @@
 from dataclasses import dataclass
+from typing import List
 
-from product import Product
+from models.product import Product
 
 
 @dataclass
 class ApiResponse:
-    prducts: list[Product]
+    products: List[Product]
     total: int
     skip: int
     limit: int

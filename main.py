@@ -1,31 +1,31 @@
-from collections import namedtuple
-from json import JSONEncoder
-
 import requests
-import json
-from types import SimpleNamespace
-import dimensions
-from dimensions import Dimensions
+import tkinter as tk
+from dataclass_wizard import fromdict
+from models.apiResponse import ApiResponse
 
 
-class ProductEncoder(JSONEncoder):
-    def default(self, o):
-        return o.__dict__
+response = requests.get("https://dummyjson.com/products")
+data_dict = response.json()
+product_list = fromdict(ApiResponse, data_dict)
+
+# print(product_list.total)
+
+# for product in product_list.products:
+#     print(product.title)
 
 
-def customProductDecoder(producto):
-    return namedtuple("X", producto.keys())(*producto.values())
+def main():
+    root = tk.Tk()
+    root.title("Tarea 3")
+    titulo = "Titulos de productos"
+    root.title("Titulos de productos")
+    label_titulo = tk.Label(text=titulo, font=("Arial", 20))
+    label_titulo.pack(padx=20, pady=20)
+    for product in product_list.products:
+        label_titulos_productos = tk.Label(text=product.title)
+        label_titulos_productos.pack(padx=20, pady=20)
 
-URL = "https://dummyjson.com/products"
-response = requests.get(URL)
-producto = response.json()
-productoJSON = json.dumps(producto, indent = 4, cls = ProductEncoder)
-print('Solicitud exitosa')
-print('Data:', response.json())
+    root.mainloop()
 
 
-# data = '{"name": "John Smith", "hometown": {"name": "New York", "id": 123}}'
-
-x = json.loads(response.json(), object_hook= customProductDecoder)
-print(x.products[0].title)
-# print(x.name, x.hometown.name, x.hometown.id)
+main()
