@@ -29,4 +29,4 @@ class Product:
     meta: Meta
     images: List[str]
     thumbnail: str
-    brand: str = "DefaultBrand"
+    brand: str = None
