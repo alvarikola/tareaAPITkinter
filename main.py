@@ -39,12 +39,21 @@ def mostrarProducto():
 
 
 def siguiente():
-    global indice, label_titulos_productos
+    global indice
     indice += 1
     if indice < len(product_list.products):
         mostrarProducto()
     else:
         indice = -1
+
+
+def atras():
+    global indice
+    indice -= 1
+    if indice < len(product_list.products):
+        mostrarProducto()
+    else:
+        indice = len(product_list.products) - 1
 
 
 def main():
@@ -76,6 +85,9 @@ def main():
 
     boton_siguiente = ttk.Button(root, text="Siguiente", command=siguiente)
     boton_siguiente.pack()
+
+    boton_atras = ttk.Button(root, text="Atrás", command=atras)
+    boton_atras.pack()
 
     mostrarProducto()
     root.mainloop()
