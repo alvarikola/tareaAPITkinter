@@ -1,4 +1,4 @@
 # Tarea APITkinter 
-![mosca](https://github.com/user-attachments/assets/6c37ca17-4ec0-4091-a88f-e94f0c5dc651)
+![352094_c1f77](https://github.com/user-attachments/assets/397ce71e-fb7f-430a-b37b-ea47da95c552)
 ## Álvaro Eugenio García
 🦦 👻 🗿
