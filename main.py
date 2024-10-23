@@ -1,3 +1,4 @@
+from pickle import FRAME
 from tkinter import ttk
 import requests
 import tkinter as tk
@@ -64,12 +65,26 @@ def main():
     root.title("Alvarikola Store")
     root.config(background="white")
 
-    titulo = "Productos"
-    label_titulo = ttk.Label(root, text=titulo, font=("Arial", 35, "bold"), background="white", foreground="#0077c8")
-    label_titulo.pack(padx=20, pady=20)
+    label_titulo = ttk.Label(root, text="Productos", font=("Arial", 35, "bold"), background="white", foreground="#0077c8")
+    label_titulo.pack(side="top")
+
+    busquedaBarra = tk.Frame(root, bg="white")
+    busquedaBarra.pack(side="top", fill="x", padx=20, pady=20)
+
+    busquedaElementos = tk.Frame(busquedaBarra, bg="white")
+    busquedaElementos.pack(side="top")
+
+    label_buscador = ttk.Label(busquedaElementos, text="Buscar producto: ", font=("Arial", 18, "bold"), background="white")
+    label_buscador.pack(side="left")
+
+    buscarProducto = ttk.Entry(busquedaElementos, width=50)
+    buscarProducto.pack(side="left")
+
+    boton_buscar = ttk.Button(busquedaElementos, text="Buscar", command=None)
+    boton_buscar.pack(side="left", padx = (20,0))
 
     label_titulos_productos = ttk.Label(root, text="", font=("Arial", 25, "bold"), background="white")
-    label_titulos_productos.pack(padx=20, pady=20)
+    label_titulos_productos.pack(padx=20, pady=10)
 
     label_descripcion_productos = ttk.Label(root, font=("Arial", 15), background="white")
     label_descripcion_productos.pack(padx=20, pady=0)
@@ -77,7 +92,7 @@ def main():
     label_categoria_productos = ttk.Label(root, text="", font=("Arial", 12), background="white", justify="left", width=83)
     label_categoria_productos.pack()
 
-    label_imagen_producto = ttk.Label(root, text="cargando...", background="white")
+    label_imagen_producto = ttk.Label(root, text="cargando...", background="white", borderwidth=2, relief="solid")
     label_imagen_producto.pack(padx=20, pady=20)
 
     label_precio_producto = ttk.Label(root, text="", font=("Arial", 15), background="white")
@@ -88,6 +103,7 @@ def main():
 
     boton_atras = ttk.Button(root, text="Atrás", command=atras)
     boton_atras.pack()
+
 
     mostrarProducto()
     root.mainloop()
