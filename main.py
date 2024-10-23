@@ -1,5 +1,7 @@
 from pickle import FRAME
 from tkinter import ttk
+from typing import List
+
 import requests
 import tkinter as tk
 from textwrap import wrap
@@ -7,6 +9,7 @@ from textwrap import wrap
 from PIL import Image, ImageTk
 from dataclass_wizard import fromdict
 from models.apiResponse import ApiResponse
+from models.product import Product
 
 response = requests.get("https://dummyjson.com/products")
 data_dict = response.json()
@@ -14,15 +17,35 @@ product_list = fromdict(ApiResponse, data_dict)
 
 
 indice = 0
-label_titulos_productos = ""
-label_descripcion_productos = ""
-label_categoria_productos = ""
-label_imagen_producto = ""
-label_precio_producto = ""
+label_titulos_productos = None
+label_descripcion_productos = None
+label_categoria_productos = None
+label_imagen_producto = None
+label_precio_producto = None
+
+
+def inicializarLabels(pantalla):
+    global label_titulos_productos, label_descripcion_productos, label_categoria_productos, label_imagen_producto, label_precio_producto
+
+    label_titulos_productos = ttk.Label(pantalla, text="", font=("Arial", 25, "bold"), background="white")
+    label_titulos_productos.pack(padx=20, pady=10)
+
+    label_descripcion_productos = ttk.Label(pantalla, font=("Arial", 15), background="white")
+    label_descripcion_productos.pack(padx=20, pady=0)
+
+    label_categoria_productos = ttk.Label(pantalla, text="", font=("Arial", 12), background="white", justify="left",
+                                          width=83)
+    label_categoria_productos.pack()
+
+    label_imagen_producto = ttk.Label(pantalla, text="cargando...", background="white", borderwidth=2, relief="solid")
+    label_imagen_producto.pack(padx=20, pady=20)
+
+    label_precio_producto = ttk.Label(pantalla, text="", font=("Arial", 15), background="white")
+    label_precio_producto.pack(padx=20, pady=20)
 
 
 def mostrarProducto():
-    global indice, label_titulos_productos, label_descripcion_productos, label_categoria_productos, label_imagen_producto, label_precio_producto
+    global indice
     if indice < len(product_list.products):
         label_titulos_productos.config(text=product_list.products[indice].title)
         description_wrapped = wrap(product_list.products[indice].description, width=80)
@@ -57,8 +80,24 @@ def atras():
         indice = len(product_list.products) - 1
 
 
+def buscar():
+    global product_list
+    texto = buscarProducto.get().lower()
+
+    productos_busqueda = []
+    for producto in product_list.products:
+        if texto in producto.title:
+            productos_busqueda.append(producto)
+
+    mostrar_listado(productos_busqueda)
+
+def mostrar_listado(productos: List[Product]):
+    pantalla_listado_productos = tk.Tk()
+    for producto in productos:
+        ttk.Label(pantalla_listado_productos, text=producto.title).pack()
+
 def main():
-    global label_titulos_productos, label_descripcion_productos, label_categoria_productos, label_imagen_producto, label_precio_producto
+    global buscarProducto
     root = tk.Tk()
     root.resizable(False, False)
     root.geometry("1200x800")
@@ -80,23 +119,10 @@ def main():
     buscarProducto = ttk.Entry(busquedaElementos, width=50)
     buscarProducto.pack(side="left")
 
-    boton_buscar = ttk.Button(busquedaElementos, text="Buscar", command=None)
-    boton_buscar.pack(side="left", padx = (20,0))
+    boton_buscar = ttk.Button(busquedaElementos, text="Buscar", command=buscar)
+    boton_buscar.pack(side="left", padx=(20, 0))
 
-    label_titulos_productos = ttk.Label(root, text="", font=("Arial", 25, "bold"), background="white")
-    label_titulos_productos.pack(padx=20, pady=10)
-
-    label_descripcion_productos = ttk.Label(root, font=("Arial", 15), background="white")
-    label_descripcion_productos.pack(padx=20, pady=0)
-
-    label_categoria_productos = ttk.Label(root, text="", font=("Arial", 12), background="white", justify="left", width=83)
-    label_categoria_productos.pack()
-
-    label_imagen_producto = ttk.Label(root, text="cargando...", background="white", borderwidth=2, relief="solid")
-    label_imagen_producto.pack(padx=20, pady=20)
-
-    label_precio_producto = ttk.Label(root, text="", font=("Arial", 15), background="white")
-    label_precio_producto.pack(padx=20, pady=20)
+    inicializarLabels(root)
 
     boton_siguiente = ttk.Button(root, text="Siguiente", command=siguiente)
     boton_siguiente.pack()
