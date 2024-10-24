@@ -83,12 +83,8 @@ def atras():
 def buscar():
     global product_list
     texto = buscarProducto.get().lower()
-
-    productos_busqueda = []
-    for producto in product_list.products:
-        if texto in producto.title:
-            productos_busqueda.append(producto)
-
+    productos_busqueda = list(filter(lambda producto: texto in producto.title.lower(), product_list.products))
+    productos_busqueda.sort(key=lambda producto: producto.title)
     mostrar_listado(productos_busqueda)
 
 def mostrar_listado(productos: List[Product]):
