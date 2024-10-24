@@ -89,8 +89,19 @@ def buscar():
 
 def mostrar_listado(productos: List[Product]):
     pantalla_listado_productos = tk.Tk()
+    pantalla_listado_productos.title("Alvarikola Store")
+    # pantalla_listado_productos.resizable(False, False)
+    pantalla_listado_productos.config(background="white")
+    ttk.Label(pantalla_listado_productos, text="Productos", font=("Arial", 18, "bold"), background="white").pack()
     for producto in productos:
-        ttk.Label(pantalla_listado_productos, text=producto.title).pack()
+        ttk.Label(pantalla_listado_productos, text=producto.title, background="white", justify="left").pack()
+
+    boton_buscar = ttk.Button(pantalla_listado_productos, text="Generar PDF", command=generar_pdf)
+    boton_buscar.pack(padx=(0, 0))
+
+
+def generar_pdf():
+    pass
 
 def main():
     global buscarProducto
