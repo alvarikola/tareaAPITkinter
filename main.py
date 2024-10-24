@@ -1,7 +1,7 @@
 from pickle import FRAME
 from tkinter import ttk
 from typing import List
-
+from tkinter import messagebox as alert
 import requests
 import tkinter as tk
 from textwrap import wrap
@@ -9,6 +9,7 @@ from textwrap import wrap
 from PIL import Image, ImageTk
 from dataclass_wizard import fromdict
 from models.apiResponse import ApiResponse
+from models.empresa import Empresa
 from models.product import Product
 
 response = requests.get("https://dummyjson.com/products")
@@ -90,17 +91,25 @@ def mostrar_listado(productos: List[Product]):
     pantalla_listado_productos = tk.Tk()
     pantalla_listado_productos.title("Alvarikola Store")
     pantalla_listado_productos.resizable(False, False)
-    pantalla_listado_productos.config(background="")
+    pantalla_listado_productos.config(background="white")
     ttk.Label(pantalla_listado_productos, text="Productos", font=("Arial", 18, "bold"), background="white").pack()
     for producto in productos:
         ttk.Label(pantalla_listado_productos, text=producto.title, background="white", justify="left", width=50).pack()
 
-    boton_buscar = ttk.Button(pantalla_listado_productos, text="Generar PDF", command=generar_pdf)
+    boton_buscar = ttk.Button(pantalla_listado_productos, text="Generar PDF", command=generar_pdf(productos))
     boton_buscar.pack(padx=(0, 0))
 
 
-def generar_pdf():
-    pass
+def generar_pdf(productos: List[Product]):
+    empresa: Empresa = Empresa (
+        nombre="Alvarikola Soft S.L",
+        titular= "Alvarotech Industries López",
+        cif="123456789",
+        direccion="Calel",
+        email="hola@alvarikola.com",
+    )
+    # Genero PDF (nombre=bsuqueda_resultado_202410241344SS.pdf)
+    alert.showinfo("PDF generado", "Se ha generado el PDF correctamente")
 
 def main():
     global buscarProducto
