@@ -33,8 +33,7 @@ def inicializarLabels(pantalla):
     label_descripcion_productos = ttk.Label(pantalla, font=("Arial", 15), background="white")
     label_descripcion_productos.pack(padx=20, pady=0)
 
-    label_categoria_productos = ttk.Label(pantalla, text="", font=("Arial", 12), background="white", justify="left",
-                                          width=83)
+    label_categoria_productos = ttk.Label(pantalla, text="", font=("Arial", 12), background="white", justify="left", width=83)
     label_categoria_productos.pack()
 
     label_imagen_producto = ttk.Label(pantalla, text="cargando...", background="white", borderwidth=2, relief="solid")
@@ -90,11 +89,11 @@ def buscar():
 def mostrar_listado(productos: List[Product]):
     pantalla_listado_productos = tk.Tk()
     pantalla_listado_productos.title("Alvarikola Store")
-    # pantalla_listado_productos.resizable(False, False)
-    pantalla_listado_productos.config(background="white")
+    pantalla_listado_productos.resizable(False, False)
+    pantalla_listado_productos.config(background="")
     ttk.Label(pantalla_listado_productos, text="Productos", font=("Arial", 18, "bold"), background="white").pack()
     for producto in productos:
-        ttk.Label(pantalla_listado_productos, text=producto.title, background="white", justify="left").pack()
+        ttk.Label(pantalla_listado_productos, text=producto.title, background="white", justify="left", width=50).pack()
 
     boton_buscar = ttk.Button(pantalla_listado_productos, text="Generar PDF", command=generar_pdf)
     boton_buscar.pack(padx=(0, 0))
