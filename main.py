@@ -2,6 +2,7 @@ from pickle import FRAME
 from tkinter import ttk
 from typing import List
 from tkinter import messagebox as alert
+from weasyprint import HTML
 import requests
 import tkinter as tk
 from textwrap import wrap
@@ -96,8 +97,8 @@ def mostrar_listado(productos: List[Product]):
     for producto in productos:
         ttk.Label(pantalla_listado_productos, text=producto.title, background="white", justify="left", width=50).pack()
 
-    boton_buscar = ttk.Button(pantalla_listado_productos, text="Generar PDF", command=generar_pdf(productos))
-    boton_buscar.pack(padx=(0, 0))
+    boton_pdf = ttk.Button(pantalla_listado_productos, text="Generar PDF", command=lambda: generar_pdf(productos))
+    boton_pdf.pack(padx=(0, 0))
 
 
 def generar_pdf(productos: List[Product]):
@@ -108,8 +109,36 @@ def generar_pdf(productos: List[Product]):
         direccion="Calel",
         email="hola@alvarikola.com",
     )
+    contenido_pdf = """
+    <html>
+        <head>
+            <h1>Productos</h1>
+        </head>
+        <body>
+    """
+    indice = 0
+    for producto in productos:
+        indice += 1
+        contenido_pdf += """
+            <table>
+                <tr>
+                    <td>""" + str(indice) + """</td>
+                    <td><img src='""" + producto.thumbnail + """'/></td>
+                    <td>""" + producto.title + """</td>
+                    <td>""" + producto.category + """</td>
+                    <td>""" + str(producto.price) + """</td>
+                </tr>
+            </table>
+        """
+    contenido_pdf += """
+        </body>
+    </html>
+    """
     # Genero PDF (nombre=bsuqueda_resultado_202410241344SS.pdf)
-    alert.showinfo("PDF generado", "Se ha generado el PDF correctamente")
+    htmldoc = HTML(string=contenido_pdf)
+    htmldoc.write_pdf(target="archivo.pdf")
+    # alert.showinfo("PDF generado", "Se ha generado el PDF correctamente")
+    # print(contenido_pdf)
 
 def main():
     global buscarProducto
