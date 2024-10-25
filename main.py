@@ -1,3 +1,4 @@
+from datetime import datetime
 from pickle import FRAME
 from tkinter import ttk
 from typing import List
@@ -109,12 +110,63 @@ def generar_pdf(productos: List[Product]):
         direccion="Calel",
         email="hola@alvarikola.com",
     )
+    fechaActual = datetime.now()
+    fechaFormato = fechaActual.strftime("%Y-%m-%d-%H:%M")
     contenido_pdf = """
+    <!doctype html>
     <html>
         <head>
-            <h1>Productos</h1>
+            <meta charset="utf-8" />
+            <style>
+                * {
+                    margin: 0;
+                    padding: 0;
+                    box-sizing: border-box;
+                } 
+                .logo img {
+                    width:200px; 
+                    height:200px;
+                }
+                header {
+                    display: flex;
+                    justify-content: space-between;
+                }
+                .infoEmpresa {
+                    display: flex;
+                    flex-direction: column;
+                }
+                .fotoProducto {
+                    width: 100px;
+                }
+                td {
+                    padding: 10px;
+                }
+                .precio {
+                    color: red;
+                }
+                .indice {
+                    font-size: 25px;
+                    font-weight: bold;
+                }
+            </style>
         </head>
         <body>
+            <header>
+                <div class='logo'>
+                    <img src='https://i.postimg.cc/SsCRLgk1/tienda-Logo.webp'/>
+                </div>
+                <div class='infoEmpresa'>
+                    <p>""" + empresa.nombre + """</p>
+                    <p>""" + empresa.titular + """</p>
+                    <p>""" + empresa.cif + """</p>
+                    <p>""" + empresa.direccion + """</p>
+                    <p>""" + empresa.email + """</p>
+                    <p>""" + fechaFormato + """</p>
+                </div>
+            </header>
+            <br>
+            <hr><hr>
+            <h1>Productos</h1>
     """
     indice = 0
     for producto in productos:
@@ -122,11 +174,11 @@ def generar_pdf(productos: List[Product]):
         contenido_pdf += """
             <table>
                 <tr>
-                    <td>""" + str(indice) + """</td>
-                    <td><img src='""" + producto.thumbnail + """'/></td>
+                    <td class= 'indice'>""" + str(indice) + """</td>
+                    <td><img class='fotoProducto' src='""" + producto.thumbnail + """'/></td>
                     <td>""" + producto.title + """</td>
                     <td>""" + producto.category + """</td>
-                    <td>""" + str(producto.price) + """</td>
+                    <td class='precio'>""" + str(producto.price) + """</td>
                 </tr>
             </table>
         """
@@ -134,11 +186,10 @@ def generar_pdf(productos: List[Product]):
         </body>
     </html>
     """
-    # Genero PDF (nombre=bsuqueda_resultado_202410241344SS.pdf)
+    # Genero PDF (nombre=busqueda_resultado_202410241344SS.pdf)
     htmldoc = HTML(string=contenido_pdf)
-    htmldoc.write_pdf(target="archivo.pdf")
-    # alert.showinfo("PDF generado", "Se ha generado el PDF correctamente")
-    # print(contenido_pdf)
+    htmldoc.write_pdf(target=f"busqueda_resultado_{fechaFormato}")
+    alert.showinfo("PDF generado", "Se ha generado el PDF correctamente")
 
 def main():
     global buscarProducto
