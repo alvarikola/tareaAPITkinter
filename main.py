@@ -188,7 +188,7 @@ def generar_pdf(productos: List[Product]):
     """
     # Genero PDF (nombre=busqueda_resultado_202410241344SS.pdf)
     htmldoc = HTML(string=contenido_pdf)
-    htmldoc.write_pdf(target=f"busqueda_resultado_{fechaFormato}")
+    htmldoc.write_pdf(target=f"busqueda_resultado_{fechaFormato}.pdf")
     alert.showinfo("PDF generado", "Se ha generado el PDF correctamente")
 
 def main():
